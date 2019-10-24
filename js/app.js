@@ -52,15 +52,12 @@ class GameManager {
 		this.phases = ["roll", "actions", "buy"];
 		this.phase = "roll"; // "roll", "actions", "buy"
 
-		this.players = [];
-		for (let i=0; i<this.numPlayers; i++) {
-			this.players.push(
-				new Player(this, playerNames[i])
-			);
-		}
-
 		this.errorStyle = 'color: red; font-style: italic; border-top: 1px solid; border-bottom: 1px solid;'
 
+		if (this.createMe) {
+			this.createMe();
+		}
+		
 		this.deck = [
 			new WheatField(),
 			new WheatField(),
@@ -136,6 +133,13 @@ class GameManager {
 			new Die(6),
 			new Die(6)
 		];
+
+		this.players = [];
+		for (let i=0; i<this.numPlayers; i++) {
+			this.players.push(
+				new Player(this, playerNames[i])
+			);
+		}
 
 		// Begin the game!
 		this.gameStart();
@@ -411,6 +415,10 @@ class Card {
 		}
 
 		this.logStyle = 'color: green; padding-left: 1em; border-left: 4px solid green;';
+
+		if (this.createMe) {
+			this.createMe();
+		}
 	}
 
 	changeOwnership(player) {
@@ -857,7 +865,6 @@ class RadioTower extends Card {
     }
 }
 
-// Deck class
 
 /* Player class
 	
@@ -886,6 +893,10 @@ class Player {
 			new AmusementPark(this),
 			new RadioTower(this)
 		];
+
+		if (this.createMe) {
+			this.createMe();
+		}
 	}
 
 	roll(numDice = 1) {

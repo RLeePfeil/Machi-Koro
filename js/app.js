@@ -300,6 +300,10 @@ class GameManager {
 		} else {
 			this.setPhase(which);
 		}
+
+		if (this.updatePhase) {
+			this.updatePhase();
+		}
 	}
 
 	phaseAdvanced() {

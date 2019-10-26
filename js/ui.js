@@ -9,6 +9,9 @@ GameManager.prototype.createMe = function() {
 	);
 	this.$el.data('me', this);
 
+	this.$phase = $(`<div id="phase"></div>`);
+	this.$el.append(this.$phase);
+
 	this.$diceMat = $(`<div id="dice-mat"></div>`);
 	this.$el.append(this.$diceMat);
 
@@ -19,6 +22,10 @@ GameManager.prototype.createMe = function() {
 	this.$el.append(this.$playerArea);
 
 	$body.append(this.$el);
+}
+
+GameManager.prototype.updatePhase = function() {
+	this.$phase.html(`It's ${this.getActivePlayer().name}'s ${this.getPhase()} phase`);
 }
 
 Die.prototype.createMe = function() {
@@ -47,6 +54,15 @@ Die.prototype.update = function() {
 
 	this.$el.addClass(`roll-${this.value}`);
 	this.$el.html(`${this.value}`);
+}
+
+Pile.prototype.createMe = function() {
+	this.$el = $(
+		`<div class="pile">
+			
+		</div>`
+	);
+	this.$el.data('me', this);
 }
 
 Card.prototype.createMe = function() {

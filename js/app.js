@@ -57,7 +57,7 @@ class GameManager {
 		if (this.createMe) {
 			this.createMe();
 		}
-		
+
 		this.deck = [
 			new WheatField(),
 			new WheatField(),
@@ -130,8 +130,8 @@ class GameManager {
 		}
 
 		this.dice = [
-			new Die(6),
-			new Die(6)
+			new Die(this, 6),
+			new Die(this, 6)
 		];
 
 		this.players = [];
@@ -377,17 +377,47 @@ class GameManager {
 }
 
 class Die {
-	constructor(numSides = 6) {
+	constructor(gameManager, numSides = 6) {
 		this.numSides = numSides;
 		this.value = 1;
 		this.isActive = false;
+		this.gm = gameManager;
+
+		if (this.createMe) {
+			this.createMe();
+		}
 	}
 
 	roll() {
 		this.isActive = true;
 		this.value = Math.ceil( Math.random() * this.numSides );
 
+		if (this.update) {
+			this.update();
+		}
+
 		return this.value;
+	}
+
+}
+
+class Pile {
+	constructor(gameManager) {
+		this.myCards = [];
+
+		this.gm = gameManager;
+
+		if (this.createMe) {
+			this.createMe();
+		}
+	}
+
+	addCard() {
+		
+	}
+
+	buyCard(player) {
+
 	}
 }
 
@@ -938,6 +968,10 @@ class Player {
 	takeCard(card) {
 		card.changeOwnership(this);
 		this.hand.push(card);
+
+		if (card.addMeToHand) {
+			card.addMeToHand(this);
+		}
 	}
 
 	// Determines whether a player has a card of a certain class name

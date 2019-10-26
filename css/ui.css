@@ -14,6 +14,7 @@ html, body {
 	overflow: hidden;
 	background-color: #F6F6F6;
 	box-shadow: 2px 2px 5px rgba(0,0,0,.3);
+	cursor: default;
 }
 
 /* name */
@@ -46,4 +47,14 @@ html, body {
 	box-shadow: 1px 1px 3px rgba(0,0,0,.3);
 }
 
-.type-
+.die {
+	width: 3em;
+	height: 3em;
+	border-radius: .25rem;
+	background-color: blue;
+	color: #FFF;
+	margin: .5rem;
+	text-align: center;
+	line-height: 3em;
+	display: inline-block;
+}

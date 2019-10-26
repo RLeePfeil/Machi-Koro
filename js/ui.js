@@ -9,6 +9,9 @@ GameManager.prototype.createMe = function() {
 	);
 	this.$el.data('me', this);
 
+	this.$diceMat = $(`<div id="dice-mat"></div>`);
+	this.$el.append(this.$diceMat);
+
 	this.$piles = $(`<div id="piles"></div>`);
 	this.$el.append(this.$piles);
 
@@ -16,6 +19,31 @@ GameManager.prototype.createMe = function() {
 	this.$el.append(this.$playerArea);
 
 	$body.append(this.$el);
+}
+
+Die.prototype.createMe = function() {
+	this.$el = $(
+		`<span class="die die-${this.numSides}">${this.value}</span>`
+	);
+	this.$el.data('me', this);
+	this.$el.data('sides', this.numSides);
+
+	this.$el.on('click', () => { this.gm.getActivePlayer().roll(this.dieNum); });
+
+	this.gm.$diceMat.append(this.$el);
+
+	// Which #die am I
+	this.dieNum = this.gm.$diceMat.find('.die').index(this.$el) + 1;
+}
+
+Die.prototype.update = function() {
+	let classes = this.$el.attr('class');
+	// Remove the current roll class
+	classes.replace(/roll.+ /gi);
+	this.$el.attr('class', classes);
+
+	this.$el.addClass(`roll-${this.value}`);
+	this.$el.html(`${this.value}`);
 }
 
 Card.prototype.createMe = function() {

@@ -24,6 +24,56 @@ html, body {
 	box-shadow: 1px 1px 3px rgba(0,0,0,.3);
 }
 
+#piles {
+
+}
+
+.pile {
+	position: relative;
+}
+.pile .card {
+	margin-top: calc(-50% + 4em);
+}
+
+.pile:nth-child(1) {
+	padding-top: 10em;
+}
+
+.pile:nth-child(1) .card {
+	transition-delay: .1s;
+}
+.pile:nth-child(2) .card {
+	transition-delay: .2s;
+}
+.pile:nth-child(3) .card {
+	transition-delay: .3s;
+}
+.pile:nth-child(4) .card {
+	transition-delay: .4s;
+}
+.pile:nth-child(5) .card {
+	transition-delay: .5s;
+}
+.pile:nth-child(6) .card {
+	transition-delay: .6s;
+}
+.pile:nth-child(7) .card {
+	transition-delay: .7s;
+}
+.pile:nth-child(8) .card {
+	transition-delay: .8s;
+}
+.pile:nth-child(9) .card {
+	transition-delay: .9s;
+}
+.pile:nth-child(10) .card {
+	transition-delay: 1s;
+}
+
+#player-area {
+	
+}
+
 .card {
 	display: inline-block;
 	margin-right: .5rem;
@@ -88,6 +138,7 @@ html, body {
 	text-align: center;
 	line-height: 3em;
 	display: inline-block;
+	cursor: pointer;
 }
 
 .die-2 {

@@ -63,6 +63,17 @@ Pile.prototype.createMe = function() {
 		</div>`
 	);
 	this.$el.data('me', this);
+
+	this.$el.on('click', ()=>{ this.buyCard(); });
+
+	this.gm.$piles.append(this.$el);
+}
+
+Pile.prototype.updatePile = function() {
+	for (const card of this.myCards) {
+		this.$el.append(card.$el);
+		setTimeout(()=> { card.$el.addClass('animate-in'); }, 10);
+	}
 }
 
 Card.prototype.createMe = function() {

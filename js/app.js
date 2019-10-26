@@ -46,7 +46,6 @@ const playerNames = [
 */
 class GameManager {
 	constructor(numPlayers = 2) {
-		this.numPlayers = numPlayers;
 		// Iterates through players
 		this.whoseTurn = 0;
 		this.phases = ["roll", "actions", "buy"];
@@ -125,15 +124,19 @@ class GameManager {
 		// Instantiate the piles
 		this.numPiles = 10;
 		this.piles = [];
-		for (let i=0; i<this.numPiles-1; i++) {
-			this.piles[i] = [];
+		for (let i=0; i<this.numPiles; i++) {
+			this.piles.push(new Pile(this));
 		}
 
-		this.dice = [
-			new Die(this, 6),
-			new Die(this, 6)
-		];
+		// Instantiate the dice
+		this.numDice = 2;
+		this.dice = [];
+		for (let i=0; i<this.numDice; i++) {
+			this.dice.push(new Die(this, 6));
+		}
 
+		// Instantiate the players
+		this.numPlayers = numPlayers;
 		this.players = [];
 		for (let i=0; i<this.numPlayers; i++) {
 			this.players.push(
@@ -178,12 +181,12 @@ class GameManager {
 			let nextEmpty = null;
 			// First check if this card is in any other piles
 			for (const pile of this.piles) {
-				if (pile.length == 0) {
+				if (pile.isEmpty()) {
 					if (nextEmpty == null) {
 						nextEmpty = pile;
 					}
-				} else if (pile[0].name == card.name) {
-					pile.push(card);
+				} else if (pile.getLastCard().name == card.name) {
+					pile.addCard(card);
 					nextEmpty = null;
 					break;
 				}
@@ -191,7 +194,7 @@ class GameManager {
 
 			// If not, and there's an empty pile, put it there!
 			if (nextEmpty != null) {
-				nextEmpty.push(card);
+				nextEmpty.addCard(card);
 				continue;
 			}
 		}
@@ -199,7 +202,7 @@ class GameManager {
 
 	findCardPile(ClassName) {
 		for (const pile of this.piles) {
-			if (pile[0] instanceof ClassName) {
+			if (pile.getLastCard() instanceof ClassName) {
 				return pile;
 			}
 		}
@@ -215,7 +218,7 @@ class GameManager {
 		let empties = [];
 
 		for (const pile of this.piles) {
-			if (pile.length == 0) {
+			if (pile.isEmpty()) {
 				empties.push(pile);
 			}
 		}
@@ -350,8 +353,8 @@ class GameManager {
 		let cards = [];
 
 		for (const pile of this.piles) {
-			if (pile.length > 0) {
-				cards.push(pile[0]);
+			if (!pile.isEmpty()) {
+				cards.push(pile.getLastCard());
 			}
 		}
 
@@ -416,12 +419,36 @@ class Pile {
 		}
 	}
 
-	addCard() {
-		
+	addCard(card) {
+		this.myCards.push(card);
+
+		if (this.updatePile) {
+			this.updatePile();
+		}
 	}
 
-	buyCard(player) {
+	buyCard() {
+		this.gm.getActivePlayer().buyCard(this.getLastCard().constructor);
+	}
 
+	getLastCard() {
+		if (this.myCards.length > 0) {
+			return this.myCards[this.myCards.length-1];
+		} else {
+
+		}
+	}
+
+	removeLastCard() {
+		if (this.myCards.length > 0) {
+			return this.myCards.pop();
+		} else {
+			return false;
+		}
+	}
+
+	isEmpty() {
+		return this.myCards.length == 0;
 	}
 }
 
@@ -960,10 +987,10 @@ class Player {
 			// Error
 			console.log(`No ${CardClass.name} is available for purchase`);
 		} else {
-			if (cardPile[0].cost <= this.money) {
-				this.adjustMoney(-1 * cardPile[0].cost);
+			if (cardPile.getLastCard().cost <= this.money) {
+				this.adjustMoney(-1 * cardPile.getLastCard().cost);
 				
-				const card = cardPile.pop();
+				const card = cardPile.removeLastCard();
 				this.takeCard(card);
 				console.log(`${this.name} buys a ${CardClass.name} for ${card.cost} and has ${this.money} remaining`);
 				// If the bought card is the last in a pile, deal out more cards
@@ -972,7 +999,7 @@ class Player {
 					this.gm.showCardsToBuy();
 				}
 			} else {
-				console.log(`${CardClass.name} is too expensive for ${this.name} (needs ${cardPile[0].cost}, has ${this.money})`);
+				console.log(`${CardClass.name} is too expensive for ${this.name} (needs ${cardPile.getLastCard().cost}, has ${this.money})`);
 			}
 		}
 	}

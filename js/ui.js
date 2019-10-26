@@ -34,6 +34,9 @@ Die.prototype.createMe = function() {
 
 	// Which #die am I
 	this.dieNum = this.gm.$diceMat.find('.die').index(this.$el) + 1;
+
+	// Give me a special class based on my number
+	this.$el.addClass(`die-${this.dieNum}`);
 }
 
 Die.prototype.update = function() {
@@ -58,13 +61,16 @@ Card.prototype.createMe = function() {
 }
 
 Card.prototype.addMeToHand = function() {
+	this.$el.removeClass('animate-in');
 	this.owner.$el.find('.player-mat').append(this.$el);
+	setTimeout(()=> { this.$el.addClass('animate-in'); }, 10);
+	
 }
 
 Player.prototype.createMe = function() {
 	this.$el = $(
 		`<div class="player">
-			<h3>${this.name}</h3>
+			<h3>${this.name} <span class="money">${this.money}</span></h3>
 			<div class="player-mat"></div>
 		</div>`
 	);
@@ -77,4 +83,8 @@ Player.prototype.createMe = function() {
 
 	// Add my mat to the player area
 	this.gm.$playerArea.append(this.$el);
+}
+
+Player.prototype.updateMoney = function() {
+	this.$el.find('.money').html(this.money);
 }

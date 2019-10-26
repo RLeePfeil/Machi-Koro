@@ -3,6 +3,11 @@ html, body {
 	font-size: 16px;
 }
 
+.player-mat {
+	perspective: 600px;
+	perspective-origin: center;
+}
+
 .card {
 	display: inline-block;
 	margin-right: .5rem;
@@ -15,6 +20,11 @@ html, body {
 	background-color: #F6F6F6;
 	box-shadow: 2px 2px 5px rgba(0,0,0,.3);
 	cursor: default;
+
+	opacity: 0;
+	transform: scale(.8) rotateX(40deg) translateZ(50px) translateY(100px);
+	transform-origin: 50% 0%;
+	transition: all .5s ease-in-out 0s;
 }
 
 /* name */
@@ -47,6 +57,11 @@ html, body {
 	box-shadow: 1px 1px 3px rgba(0,0,0,.3);
 }
 
+.card.animate-in {
+	transform: scale(1) rotateX(0deg) translateZ(0px) translateY(0px);
+	opacity: 1;
+}
+
 .die {
 	width: 3em;
 	height: 3em;
@@ -57,4 +72,8 @@ html, body {
 	text-align: center;
 	line-height: 3em;
 	display: inline-block;
+}
+
+.die-2 {
+	background-color: green;
 }

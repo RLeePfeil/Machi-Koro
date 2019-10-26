@@ -519,7 +519,7 @@ class WheatField extends Card {
     action() {
     	// Get one coin from the bank
     	console.log(`%c${this.owner.name} gets one coin from their Wheat Field`, this.logStyle);
-    	this.owner.money+= 1;
+    	this.owner.adjustMoney(1);
     }
 }
 
@@ -540,7 +540,7 @@ class Ranch extends Card {
     action() {
     	// Get one coin from the bank
     	console.log(`%c${this.owner.name} gets one coin from their Ranch`, this.logStyle);
-    	this.owner.money+= 1;
+    	this.owner.adjustMoney(1);
     }
 }
 
@@ -561,7 +561,7 @@ class Bakery extends Card {
     action() {
     	// Get one coin from the bank
     	console.log(`%c${this.owner.name} gets one coin from their Bakery`, this.logStyle);
-    	this.owner.money+= 1;
+    	this.owner.adjustMoney(1);
     }
 }
 
@@ -583,8 +583,8 @@ class Cafe extends Card {
     	// Get 1 coin from active player
     	if (this.getActivePlayer().money >= 1) {
     		console.log(`%c${this.owner.name} gets one coin from their Cafe from the active player, ${this.getActivePlayer().name}`, this.logStyle);
-    		this.getActivePlayer().money-= 1;
-    		this.owner.money+= 1;
+    		this.getActivePlayer().adjustMoney(-1);
+    		this.owner.adjustMoney(1);
     	} else {
     		console.log(`%c${this.owner.name} gets no coins from their Cafe from the active player, ${this.getActivePlayer().name} because they are broke`, this.logStyle);
     	}
@@ -608,7 +608,7 @@ class ConvenienceStore extends Card {
     action() {
     	// Get one coin from the bank
     	console.log(`%c${this.owner.name} gets three coins from their Convenience Store`, this.logStyle);
-    	this.owner.money+= 3;
+    	this.owner.adjustMoney(3);
     }
 }
 
@@ -629,7 +629,7 @@ class Forest extends Card {
     action() {
     	// Get one coin from the bank
     	console.log(`%c${this.owner.name} gets one coin from their Forest`, this.logStyle);
-    	this.owner.money+= 1;
+    	this.owner.adjustMoney(1);
     }
 }
 
@@ -753,7 +753,7 @@ class Mine extends Card {
     action() {
     	// Get one coin from the bank
     	console.log(`%c${this.owner.name} gets five coins from their Mine`, this.logStyle);
-    	this.owner.money+= 5;
+    	this.owner.adjustMoney(5);
     }
 }
 
@@ -800,7 +800,7 @@ class AppleOrchard extends Card {
     action() {
     	// Get one coin from the bank
     	console.log(`%c${this.owner.name} gets three coins from their Apple Orchard`, this.logStyle);
-    	this.owner.money+= 3;
+    	this.owner.adjustMoney(3);
     }
 }
 
@@ -942,6 +942,13 @@ class Player {
 			console.log(`You can't roll, ${this.name}! It's ${this.gm.getActivePlayer().name}'s turn.`);
 		}
 	}
+
+	adjustMoney(howMuch) {
+		this.money += howMuch;
+		if (this.updateMoney) {
+			this.updateMoney();
+		}
+	}
 	
 	buyCard(CardClass) {
 		const cardPile = this.gm.findCardPile(CardClass);
@@ -950,7 +957,8 @@ class Player {
 			console.log(`No ${CardClass.name} is available for purchase`);
 		} else {
 			if (cardPile[0].cost <= this.money) {
-				this.money-= cardPile[0].cost;
+				this.adjustMoney(-1 * cardPile[0].cost);
+				
 				const card = cardPile.pop();
 				this.takeCard(card);
 				console.log(`${this.name} buys a ${CardClass.name} for ${card.cost} and has ${this.money} remaining`);

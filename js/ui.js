@@ -5,12 +5,16 @@ $body = $('body');
 
 GameManager.prototype.createMe = function() {
 	this.$el = $(
-		`<h1 id="game-title">Machi Koro</h1><div id="game-area"></div>`
+		`<div id="game-area"></div>`
 	);
 	this.$el.data('me', this);
 
 	this.$phase = $(`<div id="phase"></div>`);
 	this.$el.append(this.$phase);
+
+	this.$nextTurn = $(`<button id="next-turn">Next Turn</button>`);
+	this.$nextTurn.on('click', ()=>{ this.getActivePlayer().doneBuying(); });
+	this.$el.append(this.$nextTurn);
 
 	this.$diceMat = $(`<div id="dice-mat"></div>`);
 	this.$el.append(this.$diceMat);
@@ -21,6 +25,7 @@ GameManager.prototype.createMe = function() {
 	this.$playerArea = $(`<div id="player-area"></div>`);
 	this.$el.append(this.$playerArea);
 
+	$body.append(`<h1 id="game-title">Machi Koro</h1>`);
 	$body.append(this.$el);
 }
 

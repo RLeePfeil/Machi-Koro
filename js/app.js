@@ -1,6 +1,6 @@
 const playerNames = [
-	"Bill",
-	"Jeanie",
+	"Coreen",
+	"Lee",
 	"Steve",
 	"Margaret",
 	"Holly",
@@ -380,6 +380,10 @@ class GameManager {
 	gameStart() {
 		this.shuffleDeck();
 		this.deal();
+
+		if (this.updatePhase) {
+			this.updatePhase();
+		}
 	}
 }
 

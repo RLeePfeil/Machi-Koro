@@ -85,6 +85,9 @@ Card.prototype.createMe = function() {
 	this.$el = $(
 		`<span class="card type-${this.type}">
 			<h3>${this.name}</h3>
+			<div class="activates-on">
+				<span>${ this.activatesOnNumber.join('</span><span>') }</span>
+			</div>
 			<h4>${this.description}</h4>
 			<h6>${this.cost}</h6>
 		</span>`

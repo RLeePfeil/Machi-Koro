@@ -25,7 +25,7 @@ GameManager.prototype.createMe = function() {
 	this.$playerArea = $(`<div id="player-area"></div>`);
 	this.$el.append(this.$playerArea);
 
-	$body.append(`<h1 id="game-title">Machi Koro</h1>`);
+	$body.append(`<h1 id="game-title"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 80" preserveAspectRatio="none"><polygon points="360 80 360 0 0 0 0 80 281 6 360 80" style="fill:#307fff"/></svg><span>Machi Koro</span></h1>`);
 	$body.append(this.$el);
 }
 

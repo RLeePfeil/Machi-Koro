@@ -6,7 +6,6 @@
 ## Setup
 By default, two players are loaded and a default deck of cards is shuffled.
 Each player has 3 coins and a 2 starting cards.
-, and click the cards in the pool to buy one and add it to your hand.
 
 ## How to play
 1. Tap the dice to roll
